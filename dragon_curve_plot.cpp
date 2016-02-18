@@ -1,8 +1,8 @@
 /*
-Use OpenCV to draw dragon curve.
-I use OpenCV 2.4.7 with opencv_core247.dll, opencv_imgproc247.dll, and opencv_highgui247.dll.
-by J.Shine.Yamaha.Chenkerymiowstone
-2016.2.17
+	Use OpenCV to draw dragon curve.
+	I use OpenCV 2.4.7 with opencv_core247.dll, opencv_imgproc247.dll, and opencv_highgui247.dll.
+	by J.Shine.Yamaha.Chenkerymiowstone
+	2016.2.17
 */
 
 # include <stdio.h>
@@ -32,8 +32,17 @@ int main()
 	CvSize winsz;
 	CvScalar white, blue, yellow, color;
 	CvFont font;
-	int i, step, edgeamount, edgeamount0, sideswitch, fonttype, fthk;
+	int i, step, vertexamount, vertexamount0, sideswitch, fonttype, fthk;
 	char key, text[10];
+	
+	// inform
+	printf("\n\n");
+	printf("\t Dragon Curve Plot\n\n");
+	printf("\t I use OpenCV 2.4.7 with:\n");
+	printf("\t\t opencv_core247.dll\n");
+	printf("\t\t opencv_imgproc247.dll\n");
+	printf("\t\t opencv_highgui247.dll\n\n");
+	printf("\t by J.S.Y.Chenkerymiowstone  2016.2.17");
 	
 	// memory allocation of array
 	size_t arraysz = 100000000;
@@ -58,12 +67,12 @@ int main()
 	p[0] = cvPoint2D32f(startx, horizy);
 	p[1] = cvPoint2D32f(endx,   horizy);
 	step = 1;
-	edgeamount0 = 2;
-	edgeamount = 3;
-	while(edgeamount<arraysz)
+	vertexamount0 = 2;
+	vertexamount = 3;
+	while(vertexamount<arraysz)
 	{
 		// data arrangement
-		for(i=edgeamount0-1; i>0; i--) {
+		for(i=vertexamount0-1; i>0; i--) {
 			p[i*2] = p[i];
 		}
 		
@@ -72,7 +81,7 @@ int main()
 		cvPutText(fr, text, cvPoint(winx*0.73,winy*0.2), &font, white);
 		color = (step%2==1) ? blue : yellow;
 		sideswitch = -1;
-		for(i=0; i<edgeamount-1; i+=2) {
+		for(i=0; i<vertexamount-1; i+=2) {
 			// direction vector
 			v.x = p[i+2].x - p[i].x;
 			v.y = p[i+2].y - p[i].y;
@@ -85,10 +94,10 @@ int main()
 			cvLine(fr, cvPointFrom32f(p[i  ]), cvPointFrom32f(p[i+1]), white, 1, CV_AA, 0);
 			cvLine(fr, cvPointFrom32f(p[i+1]), cvPointFrom32f(p[i+2]), color, 2, CV_AA, 0);
 			cvLine(fr, cvPointFrom32f(p[i+1]), cvPointFrom32f(p[i+2]), white, 1, CV_AA, 0);
-			/*if(step<8 || i%((edgeamount-1)/64)==0)*/
+			/*if(step<8 || i%((vertexamount-1)/64)==0)*/
 			cvShowImage("Dragon Curve", fr);
 			// check whether key something or not
-			key = cvWaitKey( (step<7)?100:1  );
+			key = cvWaitKey( (step<7)?100:1 );
 			if(key!=-1) break;
 			// swich side between left and right
 			sideswitch*=-1;
@@ -101,8 +110,8 @@ int main()
 		
 		// update parameter
 		step++;
-		edgeamount0 = edgeamount;
-		edgeamount = edgeamount*2-1;
+		vertexamount0 = vertexamount;
+		vertexamount = vertexamount*2-1;
 	}
 	
 	if(key==-1) cvWaitKey(0);
